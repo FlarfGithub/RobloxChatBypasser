@@ -78,16 +78,38 @@
     var splitMessagesDiv = $('.split-messages');
     splitMessagesDiv.empty();
     for (var i = 0; i < splitMessages.length; i++) {
-      splitMessagesDiv.append("<div>Message " + (i + 1) + ": " + splitMessages[i] + "</div>");
+      splitMessagesDiv.append("<div>Snippet " + (i + 1) + ": <input type='text' class='form-control' value='" + splitMessages[i] + "' readonly><button class='btn btn-primary mt-2 copy-button'>Copy</button></div>");
     }
     splitMessagesDiv.show();
   });
+
+  // Copy button functionality
+  $(document).on('click', '.copy-button', function() {
+    var snippetText = $(this).prev().val();
+    copyToClipboard(snippetText);
+    alert("Snippet copied to clipboard: " + snippetText);
+  });
+
+  // Helper function to copy text to clipboard
+  function copyToClipboard(text) {
+    var textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+  }
 
   function splitTextIntoMessages(text) {
     var messages = [];
     var startIndex = 0;
     while (startIndex < text.length) {
-      messages.push(text.substr(startIndex, 200));
+      var snippet = text.substr(startIndex, 200);
+      if (startIndex + snippet.length < text.length) {
+        var remainingChars = 200 - snippet.length;
+        snippet += text.substr(startIndex + snippet.length, remainingChars);
+      }
+      messages.push(snippet);
       startIndex += 200;
     }
     return messages;
