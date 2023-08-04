@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Roblox Chat Bypasser</title>
+  <title>Roblox Chat Converter</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -40,6 +40,7 @@
       var inputText = $(this).val();
       var convertedText = convertToBold(inputText);
       $('#convertedWord').val(convertedText);
+      checkMessageLength(convertedText);
     });
   });
 
@@ -50,7 +51,31 @@
     }
     return formattedText;
   }
-</script>
 
+  function checkMessageLength(text) {
+    var messageLength = text.length;
+    if (messageLength > 200) {
+      var confirmSplit = confirm("The converted message is more than 200 characters, do you want to split it into multiple messages?");
+      if (confirmSplit) {
+        var splitMessages = splitTextIntoMessages(text);
+        alert("The message has been split into " + splitMessages.length + " messages.");
+        $('#convertedWord').val(splitMessages[0]); // Display the first part in the input box
+      } else {
+        // Truncate the text to 200 characters and show it in the input box
+        $('#inputWord').val($('#inputWord').val().slice(0, 200));
+      }
+    }
+  }
+
+  function splitTextIntoMessages(text) {
+    var messages = [];
+    var startIndex = 0;
+    while (startIndex < text.length) {
+      messages.push(text.substr(startIndex, 200));
+      startIndex += 200;
+    }
+    return messages;
+  }
+</script>
 </body>
 </html>
