@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Roblox Chat Bypasser</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#inputTab">Input Word</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#convertedTab">Bypassed Word</a>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="inputTab" class="tab-pane fade show active">
+      <div class="form-group mt-3">
+        <input type="text" class="form-control" id="inputWord" placeholder="Type a word or sentence">
+      </div>
+    </div>
+    <div id="convertedTab" class="tab-pane fade">
+      <div class="form-group mt-3">
+        <input type="text" class="form-control" id="convertedWord" placeholder="Converted word will appear here" readonly>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+  $(document).ready(function(){
+    $('#inputWord').keyup(function(){
+      var inputText = $(this).val();
+      var convertedText = convertToBold(inputText);
+      $('#convertedWord').val(convertedText);
+    });
+  });
+
+  function convertToBold(text) {
+    var formattedText = "";
+    for (var i = 0; i < text.length; i++) {
+      formattedText += "<b>" + text.charAt(i) + "</b>";
+    }
+    return formattedText;
+  }
+</script>
+
+</body>
+</html>
