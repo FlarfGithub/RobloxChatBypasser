@@ -108,12 +108,14 @@
     var startIndex = 0;
     while (startIndex < text.length) {
       var snippet = text.substr(startIndex, 200);
-      if (startIndex + snippet.length < text.length) {
-        var remainingChars = 200 - snippet.length;
-        snippet += text.substr(startIndex + snippet.length, remainingChars);
+      var lastSpaceIndex = snippet.lastIndexOf(" ");
+      if (lastSpaceIndex > -1) {
+        snippet = snippet.substr(0, lastSpaceIndex);
+        startIndex += lastSpaceIndex + 1;
+      } else {
+        startIndex += 200;
       }
       messages.push(snippet);
-      startIndex += 200;
     }
     return messages;
   }
