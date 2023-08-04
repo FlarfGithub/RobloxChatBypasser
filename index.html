@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Roblox Chat Converter</title>
+  <title>Roblox Chat Bypasser</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -25,6 +25,11 @@
     <div id="convertedTab" class="tab-pane fade">
       <div class="form-group mt-3">
         <input type="text" class="form-control" id="convertedWord" placeholder="Converted word will appear here" readonly>
+        <div class="error-message mt-2 text-danger" style="display: none;">The converted message is more than 200 characters.</div>
+      </div>
+      <div class="form-group mt-3">
+        <button type="button" class="btn btn-primary" id="splitButton" style="display: none;">Split Message</button>
+        <div class="split-messages mt-2"></div>
       </div>
     </div>
   </div>
@@ -54,18 +59,29 @@
 
   function checkMessageLength(text) {
     var messageLength = text.length;
+    var errorDiv = $('.error-message');
+    var splitButton = $('#splitButton');
+    var splitMessagesDiv = $('.split-messages');
     if (messageLength > 200) {
-      var confirmSplit = confirm("The converted message is more than 200 characters, do you want to split it into multiple messages?");
-      if (confirmSplit) {
-        var splitMessages = splitTextIntoMessages(text);
-        alert("The message has been split into " + splitMessages.length + " messages.");
-        $('#convertedWord').val(splitMessages[0]); // Display the first part in the input box
-      } else {
-        // Truncate the text to 200 characters and show it in the input box
-        $('#inputWord').val($('#inputWord').val().slice(0, 200));
-      }
+      errorDiv.show();
+      splitButton.show();
+      splitMessagesDiv.empty().hide();
+    } else {
+      errorDiv.hide();
+      splitButton.hide();
     }
   }
+
+  $('#splitButton').click(function() {
+    var convertedText = $('#convertedWord').val();
+    var splitMessages = splitTextIntoMessages(convertedText);
+    var splitMessagesDiv = $('.split-messages');
+    splitMessagesDiv.empty();
+    for (var i = 0; i < splitMessages.length; i++) {
+      splitMessagesDiv.append("<div>Message " + (i + 1) + ": " + splitMessages[i] + "</div>");
+    }
+    splitMessagesDiv.show();
+  });
 
   function splitTextIntoMessages(text) {
     var messages = [];
